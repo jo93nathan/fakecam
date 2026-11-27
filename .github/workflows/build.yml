@@ -1,0 +1,59 @@
+name: Build FakeCam
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    # Theos sur Linux exige une toolchain iOS complète (ld64, ldid...) : le runner macOS
+    # embarque déjà clang + Xcode, c'est la voie la plus fiable.
+    runs-on: macos-latest
+    env:
+      THEOS: ${{ github.workspace }}/theos
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: brew install ldid dpkg make xz
+
+      - name: Install Theos
+        run: git clone --recursive --depth 1 https://github.com/theos/theos.git "$THEOS"
+
+      - name: Install iOS SDK
+        run: |
+          git clone --depth 1 --filter=blob:none --sparse https://github.com/theos/sdks.git "$RUNNER_TEMP/sdks"
+          git -C "$RUNNER_TEMP/sdks" sparse-checkout set iPhoneOS16.5.sdk
+          mkdir -p "$THEOS/sdks"
+          cp -R "$RUNNER_TEMP/sdks/iPhoneOS16.5.sdk" "$THEOS/sdks/"
+          ls "$THEOS/sdks"
+
+      - name: Build FakeCam app (embedded in the .deb)
+        run: |
+          set -euxo pipefail
+          APP="$GITHUB_WORKSPACE/layout/Applications/FakeCam.app"
+          rm -rf "$APP" && mkdir -p "$APP"
+          cd FakeCamPicker
+          xcrun --sdk iphoneos clang -arch arm64 -fobjc-arc -miphoneos-version-min=14.0 \
+            -framework UIKit -framework Foundation -framework PhotosUI -framework CoreImage -framework CoreGraphics -framework QuartzCore -framework AVFoundation -framework CoreMedia \
+            main.m -o "$APP/FakeCamPicker"
+          cp Info.plist "$APP/Info.plist"
+          ldid -Sentitlements.plist "$APP/FakeCamPicker"
+          echo "=== Entitlements embarqués ==="
+          ldid -e "$APP/FakeCamPicker"
+
+      - name: Build package (tweak + app)
+        run: |
+          chmod 755 layout/DEBIAN/postinst layout/DEBIAN/postrm
+          gmake clean
+          gmake package
+
+      - name: Upload .deb artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fakecam-deb
+          path: packages/*.deb
+          if-no-files-found: error
