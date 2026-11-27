@@ -1,0 +1,9 @@
+Package: com.lemaso.fakecam
+Name: FakeCam
+Version: 0.0.13
+Architecture: iphoneos-arm64
+Description: Remplace l'aperçu et la photo enregistrée par l'image choisie dans l'app FakeCam (iPhone jailbreaké).
+Maintainer: Lemaso
+Author: Lemaso
+Section: Tweaks
+Depends: mobilesubstrate (>= 0.9.7000), firmware (>= 15.0)

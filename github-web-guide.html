@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FakeCam — Compiler sur GitHub Web</title>
+<style>
+  :root { --bg:#0d1117; --card:#161b22; --bd:#30363d; --txt:#e6edf3; --acc:#2f81f7; --ok:#3fb950; }
+  body { background:var(--bg); color:var(--txt); font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif; margin:0; padding:32px; line-height:1.55; }
+  .wrap { max-width:860px; margin:auto; }
+  h1 { color:var(--acc); margin-bottom:4px; }
+  .sub { color:#8b949e; margin-top:0; }
+  .step { background:var(--card); border:1px solid var(--bd); border-radius:10px; padding:16px 20px; margin:14px 0; }
+  .step b { color:var(--acc); font-size:1.05em; }
+  .num { display:inline-flex; width:26px; height:26px; align-items:center; justify-content:center; background:var(--acc); color:#fff; border-radius:50%; margin-right:8px; font-weight:700; }
+  code { background:#21262d; padding:2px 6px; border-radius:5px; font-family:ui-monospace,Consolas,monospace; }
+  pre { background:#21262d; border:1px solid var(--bd); border-radius:8px; padding:12px; overflow:auto; }
+  .ok { color:var(--ok); font-weight:600; }
+  .arrow { text-align:center; color:#8b949e; font-size:22px; margin:2px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Compiler FakeCam depuis GitHub Web</h1>
+  <p class="sub">Aucune installation locale nécessaire : GitHub build le <code>.deb</code> à ta place.</p>
+
+  <div class="step"><span class="num">1</span><b>Pousse le projet sur ton repo</b>
+    <pre>cd ~/FakeCamTweak
+git add .
+git commit -m "FakeCam v3"
+git push</pre>
+    Assure-toi que le fichier <code>.github/workflows/build.yml</code> est bien présent (il l’est déjà).
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="step"><span class="num">2</span><b>Ouvre ton repo sur github.com</b><br>
+    Dans ton navigateur : <code>https://github.com/TON_USER/fakecam</code>
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="step"><span class="num">3</span><b>Clique sur l’onglet « Actions »</b><br>
+    Il est en haut du repo, à côté de <em>Code</em>, <em>Issues</em>, <em>Pull requests</em>.
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="step"><span class="num">4</span><b>Dans la colonne de gauche, choisis « Build FakeCam »</b><br>
+    C’est le nom du workflow qu’on a ajouté.
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="step"><span class="num">5</span><b>Lance le build</b><br>
+    - Soit automatiquement après ton <code>git push</code> ;<br>
+    - Soit clique sur <b>Run workflow</b> → <b>Run workflow</b> (branche <code>main</code>).
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="step"><span class="num">6</span><b>Attends la fin</b><br>
+    Le run passe au <span class="ok">✅ vert</span> quand c’est terminé (environ 1–2 min).
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="step"><span class="num">7</span><b>Télécharge l’artifact</b><br>
+    Tout en bas de la page du run : <code>Artifacts</code> → <b>fakecam-deb</b> ↓<br>
+    Décompresse le zip pour obtenir <code>com.lemaso.fakecam_*.deb</code>.
+  </div>
+  <div class="arrow">↓</div>
+
+  <div class="step"><span class="num">8</span><b>Installe sur l’iPhone 8</b><br>
+    Envoie le <code>.deb</code> via AirDrop/SSH et installe-le avec Sileo ou Cydia.<br>
+    Redémarre l’app Appareil photo : les boutons <b>🖼</b> et <b>⭕</b> apparaissent.
+  </div>
+
+  <div class="step"><b>Problème ?</b><br>
+    Si l’onglet Actions n’apparaît pas : le fichier <code>build.yml</code> n’est pas sur la branche par défaut.<br>
+    Si le run est rouge : clique dessus puis sur l’étape <em>Build package</em> pour lire le log.
+  </div>
+</div>
+</body>
+</html>

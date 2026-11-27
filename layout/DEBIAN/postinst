@@ -1,0 +1,4 @@
+#!/var/jb/bin/sh
+chmod 755 /var/jb/Applications/FakeCam.app/FakeCamPicker 2>/dev/null
+/var/jb/usr/bin/uicache -p /var/jb/Applications/FakeCam.app >/dev/null 2>&1 || true
+exit 0
